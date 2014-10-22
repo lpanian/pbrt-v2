@@ -123,13 +123,14 @@ Spectrum FresnelDielectric::Evaluate(float cosi) const {
         swap(ei, et);
 
     // Compute _sint_ using Snell's law
-    float sint = ei/et * sqrtf(max(0.f, 1.f - cosi*cosi));
-    if (sint >= 1.) {
+    float eta = ei/et;
+    float sint2 = eta * eta * max(0.f, 1.f - cosi*cosi);
+    if (sint2 >= 1.) {
         // Handle total internal reflection
         return 1.;
     }
     else {
-        float cost = sqrtf(max(0.f, 1.f - sint*sint));
+        float cost = sqrtf(max(0.f, 1.f - sint2));
         return FrDiel(fabsf(cosi), cost, ei, et);
     }
 }
